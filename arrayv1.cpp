@@ -35,18 +35,9 @@ public:
         delete[] data_;
     }
 
-    Array& operator=(const Array& other)
+    Array& operator=(Array other)
     {
-        if (this != &other)
-        {
-            delete[] data_;
-            size_ = other.size_;
-            data_ = new T[size_];
-            for (size_t i = 0; i < size_; ++i)
-            {
-                data_[i] = other.data_[i];
-            }
-        }
+        swap(*this, other);
         return *this;
     }
 
@@ -54,7 +45,6 @@ public:
     {
         if (this != &other)
         {
-            delete[] data_;
             size_ = other.size_;
             data_ = other.data_;
             other.size_ = 0;
@@ -81,6 +71,12 @@ public:
 private:
     size_t size_;
     T* data_;
+friend void swap(Array& first, Array& second) 
+    {
+        using std::swap;
+        swap(first.size_, second.size_);
+        swap(first.data_, second.data_);
+    }
 };
 
 int main()
